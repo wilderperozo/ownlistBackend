@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+const routes ={
+  user: require('./users.route')
+}
 
+router.use('/user', routes.user);
 module.exports = router;
