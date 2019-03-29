@@ -2,6 +2,7 @@ const User = require('../../model/user.model');
 const userHelper = require('./user.helper');
 
 module.exports.add = (req, res, next) => {
+    console.log('entro aquiii??')
     const model = new User(req.body);
     User.findOne({email: req.body.email}, (err, response) => {
         if (err) {

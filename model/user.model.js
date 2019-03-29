@@ -14,24 +14,26 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
+    },
+    token: {
+        type: String
     }
 });
 userSchema.methods.toHash = ((password, callback) => {
     callback(SHA256(password, process.env.MY_HASH).toString())
 })
-userSchema.methods.validPassword = (password, cb)=>{
-    cb(this.password === SHA256(password, process.env.MY_HASH).toString());
+userSchema.methods.validPassword = function (password, cb) {
+    cb(this.password == SHA256(password, process.env.MY_HASH).toString());
 }
-userSchema.methods.generateToken = (param, cb) =>{
+userSchema.methods.generateAuthToken = function (param, cb) {
     var user = this;
     var token = jwt.sign({
-        _id: user._id.toHexString()
+        _id: user._id
     }, process.env.MY_HASH);
-    user.token = {
-        token: token
-    }
+    user.token = token;
     user.save();
-    callback(token);
+    console.log('save ', user);
+    cb(token);
 }
 
 const User = mongoose.model('user', userSchema);
